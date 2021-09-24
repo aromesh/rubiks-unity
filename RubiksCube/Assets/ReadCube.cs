@@ -33,22 +33,7 @@ public class ReadCube : MonoBehaviour
         cubeState = FindObjectOfType<CubeState>();
         cubeMap = FindObjectOfType<CubeMap>();
 
-        List<GameObject> faces_hit = new List<GameObject>();
-        Vector3 ray = t_front.transform.position;
-        RaycastHit hit;
 
-        //Does ray intersect any objects in the layer mask
-        if (Physics.Raycast(ray, t_front.right, out hit, Mathf.Infinity, layer_mask))
-        {
-            Debug.DrawRay(ray, t_front.right*hit.distance, Color.yellow);
-            faces_hit.Add(hit.collider.gameObject);
-            print(hit.collider.gameObject.name);
-        } else 
-        {
-            Debug.DrawRay(ray, t_front.right*1000, Color.green);
-        }
-        cubeState.front = faces_hit;
-        cubeMap.Set();
     }
 
     // Update is called once per frame
@@ -83,7 +68,7 @@ public class ReadCube : MonoBehaviour
         left_rays = BuildRays(t_left, new Vector3(0,180,0));
         right_rays = BuildRays(t_right, new Vector3(0,0,0));
         front_rays = BuildRays(t_front, new Vector3(0,90,0));
-        back_rays = BuildRays(t_back, new Vector3(0,90,0));
+        back_rays = BuildRays(t_back, new Vector3(0,-90,0));
 
     }
 
@@ -99,11 +84,15 @@ public class ReadCube : MonoBehaviour
         // |6|7|8|
         // origin at 4, x = +1 at 5, y = +1 at 1
 
-        for (int y = 1; y >= -1; y--)
+        for (int y = 1; y > -2; y--)
         {
-            for (int x = 1; x <= -1; x++)
+            for (int x = -1; x < 2; x++)
             {
-                Vector3 start_pos = ray_transform.localPosition + new Vector3(x,y,0); // add shift to localPosition vector
+                //Vector3 start_pos = ray_transform.localPosition + new Vector3(x,y,0); // add shift to localPosition vector
+
+                Vector3 start_pos = new Vector3(ray_transform.localPosition.x + x,
+                                    ray_transform.localPosition.y + y,
+                                    ray_transform.localPosition.z); // add shift to localPosition vector
 
                 GameObject ray_start = Instantiate(emptyGO, start_pos, Quaternion.identity, ray_transform);
                 ray_start.name = ray_count.ToString();
@@ -129,7 +118,7 @@ public class ReadCube : MonoBehaviour
             {
                 Debug.DrawRay(ray, ray_transform.forward * hit.distance, Color.yellow);
                 faces_hit.Add(hit.collider.gameObject);
-                print(hit.collider.gameObject.name);
+                //print(hit.collider.gameObject.name);
             } else 
             {
                 Debug.DrawRay(ray, ray_transform.forward * 1000, Color.green);
