@@ -23,4 +23,29 @@ public class CubeState : MonoBehaviour
     {
         
     }
+
+    public void pickUp(List<GameObject> cube_side)
+    {
+        foreach(GameObject face in cube_side)
+        {
+            //attach parent of each face to parent of middle cube (index 4) unless it is index 4
+            if (face != cube_side[4])
+            {
+                face.transform.parent.transform.parent = cube_side[4].transform.parent;
+            }
+        }
+        //start the side rotation logic
+        cube_side[4].transform.parent.GetComponent<PivotRotation>().Rotate(cube_side);
+    }
+
+    public void putDown(List<GameObject> little_cubes, Transform pivot)
+    {
+        foreach (GameObject little_cube in little_cubes)
+        {
+            if (little_cube != little_cubes[4])
+            {
+                little_cube.transform.parent.transform.parent = pivot;
+            }
+        }
+    }
 }
