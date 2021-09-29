@@ -97,6 +97,18 @@ public class PivotRotation : MonoBehaviour
         local_forward = -side[4].transform.parent.transform.localPosition;
     }
 
+    public void startAutoRotate(List<GameObject> side, float angle)
+    {
+        //pickup pieces we want to move
+        cube_state.pickUp(side);
+        //rotation axis
+        Vector3 local_forward = -side[4].transform.parent.transform.localPosition;
+        //target angle
+        target_quaternion = Quaternion.AngleAxis(angle, local_forward)*transform.localRotation;
+        active_side = side;
+        auto_rotating = true;
+    }
+
     public void rotateToRightAngle()
     {
         Vector3 vec = transform.localEulerAngles;
@@ -124,6 +136,8 @@ public class PivotRotation : MonoBehaviour
             //unparent cubes
             cube_state.putDown(active_side, transform.parent);
             read_cube.ReadState();
+            //once rotation complete
+            CubeState.auto_rotating = false;
 
             auto_rotating = false;
             mouse_drag = false;
