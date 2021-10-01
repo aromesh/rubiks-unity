@@ -49,4 +49,28 @@ public class CubeState : MonoBehaviour
             }
         }
     }
+
+    string getSideString(List<GameObject> side)
+    {
+        string side_string = "";
+        foreach(GameObject face in side)
+        {
+            //first letter
+            side_string += face.name[0];
+        }
+        return side_string;
+    }
+
+    public string getStateString()
+    {
+        string state_string = "";
+        state_string += getSideString(up);
+        state_string += getSideString(right);
+        state_string += getSideString(front);
+        state_string += getSideString(down);
+        state_string += getSideString(left);
+        state_string += getSideString(back);
+
+        return state_string;
+    }
 }

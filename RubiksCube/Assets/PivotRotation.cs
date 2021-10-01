@@ -23,10 +23,10 @@ public class PivotRotation : MonoBehaviour
         cube_state = FindObjectOfType<CubeState>();
     }
 
-    // Update is called once per frame
-    void Update()
+    // Late Update is called once per frame at the end
+    void LateUpdate()
     {
-        if (mouse_drag)
+        if (mouse_drag && !auto_rotating)
         {
             spinSide(active_side);
 
